@@ -139,17 +139,56 @@ public class App {
                                     System.out.println("Lo sentimos aun no hay ningun producto");
                                 }
                                 break;
-
+                            
                             case 2:
+                                conex_prods.requestProdCat();
+                            break;
+                            case 3: //Anadir categoria
                                 
+                                System.out.println("\n----------ANADIR CATEGORIA-----------"); 
+                            
+                            {
+
+                                try {
+                                    int id = Integer.parseInt(System.console().readLine("Id: "));
+                                    String nombre = System.console().readLine("Nombre: ");
+
+
+                                    if (cate_con.create(new Categoria(id, nombre)) == 1) {
+                                    System.out.println("Producto creado con exito");
+                                }
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println("Error, se han introducidos datos no validos");
+                                } catch (Exception e) {
+                                    System.out.println("Error inesperado, vuelve a intentarlos mas tarde." + e.getMessage());
+                                }
+                            }
+
+                                break; 
+
+                            case 4: //Actualizar categoria
+                                System.out.println("\n----------ACTUALIZAR CATEGORIA-----------"); 
+
+                                {
+                                    int id = Integer.parseInt(System.console().readLine("Id: "));
+                                    String nombre = System.console().readLine("Nombre: ");
+
+                                    cate_con.update(new Categoria(id, nombre));
+                                       
+                                }
+
                                 break;
 
-                            case 3:
-                                
-                                break;
+                            case 5: //Eliminar categoria
 
-                            case 4:
-                                
+
+                                System.out.println("\n----------ELIMINAR CATEGORIA-----------"); 
+
+                                {
+                                    int id = Integer.parseInt(System.console().readLine("Id: "));
+
+                                    cate_con.delete(id);
+                                }
                                 break;
                         
                             default:
@@ -180,16 +219,6 @@ public class App {
             conection.desconectar();
         }
 
-        
-
-        // 
-
-        // if (productos.size() != 0) {
-        // for (Producto product : productos) {
-        // System.out.println(product.toString());
-        // }
-        // }
-
     }
 
     public static void menu() {
@@ -213,9 +242,10 @@ public class App {
     public static void menCate() {
         System.out.println("""
                 1. Mostrar categorias
-                2. Anadir categoria
-                3. Actualizar categoria
-                4. Eliminar categoria
+                2. Nombre de Producto y Nombre de Categoria
+                3. Anadir categoria
+                4. Actualizar categoria
+                5. Eliminar categoria
                 """);
     }
 

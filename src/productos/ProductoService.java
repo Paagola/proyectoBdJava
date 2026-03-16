@@ -24,7 +24,7 @@ public class ProductoService implements CRUD<Producto> {
     public ArrayList<Producto> requestAll() throws SQLException {
         ArrayList<Producto> prods = new ArrayList<>();
 
-        String sql = "SELECT id, nombre, precio, stock, categoria_id  FROM productos;";
+        String sql = "SELECT id, nombre, precio, stock, categoria_id  FROM productos ORDER BY id;";
 
         ResultSet query = statement.executeQuery(sql);
 
@@ -33,10 +33,11 @@ public class ProductoService implements CRUD<Producto> {
             String nombre = query.getString("nombre");
             double precio = query.getDouble("precio");
             int stock = query.getInt("stock");
+            int cat = query.getInt("categoria_id");
 
             max_id = Math.max(id, max_id);
 
-            prods.add(new Producto(id, nombre, precio, stock));
+            prods.add(new Producto(id, nombre, precio, stock, cat));
         }
 
         return prods;
@@ -113,5 +114,18 @@ public class ProductoService implements CRUD<Producto> {
         System.out.println("Error al actualizar el producto.");
         return false;
 
+    }
+
+    public void requestProdCat() throws SQLException{
+
+        String sql = "SELECT p.nombre, c.nombre AS categoria FROM productos p LEFT JOIN categorias c ON p.categoria_id = c.id;";
+
+        ResultSet res = statement.executeQuery(sql);
+
+        while (res.next()) {
+            String nombreP = res.getString("nombre");
+            String nombreC = res.getString("categoria");
+            System.out.printf("%-25s | %-10s%n", nombreP, nombreC);
+        }
     }
 }

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import interfaces.CRUD;
-import productos.Producto;
 
 public class CategoriaService implements CRUD<Categoria>{
 
@@ -20,13 +19,20 @@ public class CategoriaService implements CRUD<Categoria>{
 
     @Override
     public boolean delete(int id) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        String sql = "DELETE FROM categorias WHERE id = " + id;
+
+        if (state.executeUpdate(sql) == 1) {
+            System.out.println("Fila eliminada con exito");
+            return true;
+        } else {
+            System.out.println("No se pudo eliminar la fila");
+            return false;
+        }
     }
 
     @Override
     public ArrayList<Categoria> requestAll() throws SQLException {
-        String sql = "SELECT c.id, c.nombre FROM categorias c";
+        String sql = "SELECT c.id, c.nombre FROM categorias c ORDER BY c.id";
 
         ResultSet query = state.executeQuery(sql);
         
@@ -44,14 +50,28 @@ public class CategoriaService implements CRUD<Categoria>{
 
     @Override
     public int create(Categoria p) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        String sql = String.format("INSERT INTO categorias (id, nombre) VALUES (%d, '%s')", p.getId(), p.getNombre());
+
+        if (state.executeUpdate(sql) == 1) {
+            System.out.println("Categoria anadida con exito");
+            return 1;
+        } else {
+            System.out.println("No se pudo anadir la categoria");
+            return 0;
+        }
     }
 
     @Override
     public Categoria update(Categoria p) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        String sql = String.format("UPDATE categorias SET nombre = '%s' WHERE id = %s", p.getNombre(), p.getId());
+
+        if (state.executeUpdate(sql) == 1) {
+            System.out.println("Columna modificada con exito");
+            return p;
+        } else {
+            System.out.println("Error al modificar");
+            return null;
+        }
     }
 
 
